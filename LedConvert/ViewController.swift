@@ -14,6 +14,10 @@ class ViewController: FormViewController {
     var colore:Double?     //Luce calda o luce fredda
     var lux:Double?        //Quantità di luce sviluppata dalla lampadina precedente
     
+    var numero_lampadine:Double?
+    var ore_giornaliere:Double?
+    var costo_elettrico_medio:Double? // €/KWh
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,24 +55,53 @@ class ViewController: FormViewController {
             }
         }
         
-            form +++ Section()
+        form +++ Section("Calcolo Risparmio")
+            <<< IntRow() {
+                $0.title = "Lampadine LED disponibili"
+                $0.value = 10
+                $0.tag = "numero_lampadine"
+            }
+            <<< IntRow() {
+                $0.title = "Ore di utilizzo giornaliere"
+                $0.value = 8
+                $0.tag = "ore_giornaliere"
+            }
+            <<< DecimalRow() {
+                $0.title = "Costo elettricità (€/KWh)"
+                $0.value = 0.22
+                $0.tag = "costo_elettrico_medio"
+            }
+        
+        form +++ Section()
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "Calcola"
                 }
                 .onCellSelection { [weak self] (cell, row) in
                     
                     let p: IntRow? = self?.form.rowBy(tag: "potenza")
-                    self?.potenza = Double((p?.value)!)
                     
                     let t:SegmentedRow<String> = (self?.form.rowBy(tag: "tipo_di_luce"))!
-                    self?.colore = (t.value=="Bianco caldo") ? 70.0 : 80.0
+                    
+                    let n: IntRow? = self?.form.rowBy(tag: "numero_lampadine")
+                    
+                    let h: IntRow? = self?.form.rowBy(tag: "ore_giornaliere")
+                    
+                    let c: DecimalRow? = self?.form.rowBy(tag: "costo_elettrico_medio")
+                    
+                    if p?.value==nil || n?.value==nil || h?.value==nil || c?.value==nil || self?.lux==nil {
+                        self?.showAlert(title: "Errore", message: "Compila tutti i campi")
+                    } else {
+                        self?.potenza               = Double((p?.value)!)
+                        self?.colore                = (t.value=="Bianco caldo") ? 70.0 : 80.0
+                        self?.numero_lampadine      = Double((n?.value)!)
+                        self?.ore_giornaliere       = Double((h?.value)!)
+                        self?.costo_elettrico_medio = Double((c?.value)!)
 
-                    self?.performSegue(withIdentifier: "calculateSegue", sender: self)
+                        self?.performSegue(withIdentifier: "calculateSegue", sender: self)
+                    }
                     
         }
-        
-        animateScroll = true
-        
+                
     }
     
     // Imposta la variabile quando viene selezionato un valore
@@ -103,11 +136,22 @@ class ViewController: FormViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "calculateSegue"{
             if let destinationVC = segue.destination as? CalcViewController {
-                destinationVC.potenza = potenza
-                destinationVC.colore = colore
-                destinationVC.lux = lux
+                destinationVC.potenza               = potenza
+                destinationVC.colore                = colore
+                destinationVC.lux                   = lux
+                destinationVC.numero_lampadine      = numero_lampadine
+                destinationVC.ore_giornaliere       = ore_giornaliere
+                destinationVC.costo_elettrico_medio = costo_elettrico_medio
             }
         }
+    }
+    
+    func showAlert(title:String, message:String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        present(alertController, animated: true)
+        
     }
     
 }

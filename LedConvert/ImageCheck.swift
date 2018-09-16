@@ -28,12 +28,12 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
     
     /// Image for selected state
     lazy public var trueImage: UIImage = {
-        return UIImage(named: "selected")!
+        return UIImage(named: "bulb_on")!
     }()
     
     /// Image for unselected state
     lazy public var falseImage: UIImage = {
-        return UIImage(named: "unselected")!
+        return UIImage(named: "bulb_off")!
     }()
     
     public override func update() {
