@@ -32,7 +32,7 @@ class CalcViewController: FormViewController {
         
         form +++ Section(
             header: "Potenza",
-            footer: "Puoi utilizzare un dispositivo LED con potenza compresa tra questi due valori"
+            footer: "Puoi utilizzare un dispositivo LED con potenza compresa tra \(String(format: "%.0f", potenza_led_min)) W e \(String(format: "%.0f", potenza_led_max)) W"
             )
             
             <<< LabelRow () {
@@ -51,7 +51,7 @@ class CalcViewController: FormViewController {
             )
     
             <<< LabelRow () {
-                $0.title = "Risparmio medio"
+                $0.title = "Risparmio annuo medio"
                 $0.value = String(format: "%.2f", riparmio_eur_medio ) + " €"
             }
         

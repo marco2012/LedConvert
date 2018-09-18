@@ -21,7 +21,10 @@ class ViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        form +++ Section("Potenza della lampadina da sostituire")
+        form +++ Section(
+            header: "Potenza",
+            footer: "Potenza in watt della lampadina da sostituire"
+            )
             
             <<< IntRow() {
                 $0.title = "Potenza (Watt)"

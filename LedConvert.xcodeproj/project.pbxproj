@@ -87,8 +87,8 @@
 				A9273DAA214E43AF001FBD84 /* ImageCheck.swift */,
 				A9A4EFF5214DA3F000BA3200 /* CalcViewController.swift */,
 				A9A4EFE5214D967A00BA3200 /* Main.storyboard */,
-				A9A4EFE8214D967C00BA3200 /* Assets.xcassets */,
 				A9A4EFEA214D967C00BA3200 /* LaunchScreen.storyboard */,
+				A9A4EFE8214D967C00BA3200 /* Assets.xcassets */,
 				A9A4EFED214D967C00BA3200 /* Info.plist */,
 			);
 			path = LedConvert;
